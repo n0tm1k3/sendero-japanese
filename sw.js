@@ -1,6 +1,6 @@
 // Offline support for the installed app (not used on claude.ai).
 // Bump VERSION whenever an audio file changes, so installed copies fetch the new clips.
-const VERSION = 'sendero-ja-2026-11-06';
+const VERSION = 'sendero-ja-2026-11-06b';
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 const AUDIO = []; // add audio-ja.json here once neural clips exist
 const FONTS = 'sendero-ja-fonts';

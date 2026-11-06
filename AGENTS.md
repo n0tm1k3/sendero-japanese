@@ -64,7 +64,6 @@ Open the page locally with `python3 -m http.server` and go to http://localhost:8
 
 - **Neural audio.** The Spanish course ships Kokoro clips (see its `tools/gen_audio.py`). Kokoro has Japanese voices (`jf_alpha`, `jm_kumo`, `jf_tebukuro`) but needs a Japanese phonemizer (misaki with pyopenjtalk). Generate `audio-ja.json` keyed `voice|text` with `tools/content.js texts`, add it to `AUDIO` in `sw.js`, and bump `VERSION`.
 - **Pitch accent marks** on words, once there's a reliable source for each word's accent.
-- **Icons** are still the Spanish ones.
 
 ## Getting changes into the live app
 

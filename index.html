@@ -4,6 +4,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+JP:wght@400;500;700&family=Klee+One:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&text=%E9%81%93&display=swap">
 <style>
 /* Layout: one centered column (max 960px) — header, tab bar, view; sessions take over the column as a focused card flow. */
 :root {
@@ -78,10 +79,7 @@ ruby rt { font-size: 0.5em; font-family: var(--jp); font-weight: 500; color: var
 .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .brand { display: flex; align-items: baseline; gap: 8px; font-family: var(--display); font-weight: 800; font-size: 1.45rem; }
 .brand small { font: 700 0.72rem var(--body); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-.mark { width: 25px; height: 25px; align-self: center; border-radius: 8px; box-shadow: 0 3px 8px color-mix(in srgb, var(--accent) 28%, transparent); background:
-  radial-gradient(circle at 25% 75%, var(--accent-ink) 0 2.5px, transparent 3px),
-  radial-gradient(circle at 50% 50%, var(--accent-ink) 0 2.5px, transparent 3px),
-  radial-gradient(circle at 75% 25%, var(--gold) 0 3px, transparent 3.5px), var(--accent); }
+.mark { width: 25px; height: 25px; align-self: center; border-radius: 7px; box-shadow: 0 3px 8px rgba(36, 58, 107, .28); display: block; flex: none; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .chip { display: inline-flex; gap: 5px; align-items: baseline; padding: 5px 12px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 2px 7px rgba(39, 49, 74, .04); font-size: 0.86rem; color: var(--muted); }
 .chip b { font-family: var(--mono); color: var(--ink); }
@@ -1319,7 +1317,7 @@ const VOICE = (() => {
   if (window.claude || !('serviceWorker' in navigator)) return;
   if (!(location.protocol === 'https:' || location.hostname === 'localhost')) return;
   [['manifest', 'manifest.webmanifest'], ['apple-touch-icon', 'icon-192.png']].forEach(([rel, href]) => { const l = document.createElement('link'); l.rel = rel; l.href = href; document.head.appendChild(l); });
-  const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#b8323c'; document.head.appendChild(m);
+  const m = document.createElement('meta'); m.name = 'theme-color'; m.content = '#243a6b'; document.head.appendChild(m);
   navigator.serviceWorker.register('sw.js').catch(() => {});
 })();
 
@@ -1543,7 +1541,7 @@ function render() {
   const k = dayKey();
   app.innerHTML = `
   <header class="top">
-    <div class="brand"><span class="mark" aria-hidden="true"></span><span>Sendero</span><small>Japanese</small></div>
+    <div class="brand"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" fill="#243a6b"/><text x="50" y="71" text-anchor="middle" font-family="'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif" font-weight="700" font-size="60" fill="#fff">道</text><circle cx="78" cy="22" r="7" fill="#d0442c"/></svg><span>Sendero</span><small>Japanese</small></div>
     <div class="chips">
       <span class="chip" id="clock" title="Minutes practiced today"><b>${Math.round(dayTotal())}</b> / ${S.settings.daily} min today</span>
       <span class="chip gold" title="Total XP"><b>${S.xp.toLocaleString()}</b> XP</span>
