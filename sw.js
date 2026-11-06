@@ -1,12 +1,12 @@
 // Offline support for the installed app (not used on claude.ai).
 // Bump VERSION whenever an audio file changes, so installed copies fetch the new clips.
-const VERSION = 'sendero-ja-2026-11-06b';
-const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+const VERSION = 'sendero-ja-2026-11-06c';
+const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-dao-192.png', 'icon-dao-512.png'];
 const AUDIO = []; // add audio-ja.json here once neural clips exist
 const FONTS = 'sendero-ja-fonts';
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE).then(() => c.addAll(AUDIO))).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE.map(u => new Request(u, { cache: 'reload' }))).then(() => c.addAll(AUDIO))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== FONTS).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -15,11 +15,11 @@ self.addEventListener('fetch', e => {
   const req = e.request; if (req.method !== 'GET') return;
   const url = new URL(req.url);
   // The page: try the network first so updates arrive, fall back to the saved copy offline.
-  if (req.mode === 'navigate' || (url.origin === location.origin && /\/(index\.html)?$/.test(url.pathname))) {
+  if (req.mode === 'navigate' || (url.origin === location.origin && /\/(index\.html|manifest\.webmanifest)?$/.test(url.pathname))) {
     e.respondWith(Promise.race([
-      fetch(req).then(r => { if (r.ok) { const c = r.clone(); caches.open(VERSION).then(x => x.put('index.html', c)); } return r; }),
+      fetch(req).then(r => { if (r.ok) { const c = r.clone(); caches.open(VERSION).then(x => x.put(req.mode === 'navigate' ? 'index.html' : req, c)); } return r; }),
       new Promise((_, rej) => setTimeout(rej, 4000))
-    ]).catch(() => caches.match('index.html')));
+    ]).catch(() => caches.match(req.mode === 'navigate' ? 'index.html' : req, { ignoreSearch: true }).then(hit => hit || caches.match('index.html'))));
     return;
   }
   // Fonts: use the saved copy, refresh it in the background.
