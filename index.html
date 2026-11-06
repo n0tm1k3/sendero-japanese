@@ -2569,7 +2569,7 @@ document.addEventListener('change', e => {
 });
 // Romaji typed into a Japanese answer box turns into kana as you go (skipped while an IME is composing).
 function liveKana(el) {
-  const v = el.value; if (!/[a-zA-Z'-]/.test(v)) return;
+  const v = el.value; if (!/[a-zA-Z'.,?!-]/.test(v)) return;
   const atEnd = el.selectionStart === v.length;
   const nv = v.replace(/(\[[^\]]*\]?)|([^\[]+)/g, (m, br, out) => br || toKana(out, false)); if (nv === v) return;
   el.value = nv; if (atEnd) el.setSelectionRange(nv.length, nv.length);
